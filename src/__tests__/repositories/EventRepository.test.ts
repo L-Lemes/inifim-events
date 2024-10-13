@@ -2,8 +2,7 @@ import { describe, it, expect, expectTypeOf } from "vitest"
 import { PrismaModelMethods, ModelRepository } from "../../repositories/ModelRepository.js"
 import { IEvent } from "../../repositories/EventRepository.js"
 
-
-describe("test events repositories methods", () => {
+describe("test events repository methods", () => {
   const eventsData = [
     {
       id: 'id-test-1',
