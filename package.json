@@ -1,0 +1,28 @@
+{
+  "name": "inifim-events",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "tsx watch src/server.ts",
+    "test": "vitest"
+  },
+  "keywords": [],
+  "author": "",
+  "type": "module",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/express": "^5.0.0",
+    "@types/node": "^22.7.4",
+    "prisma": "^5.20.0",
+    "tsx": "^4.19.1",
+    "typescript": "^5.6.2",
+    "vitest": "^2.1.2",
+    "vitest-mock-extended": "^2.0.2"
+  },
+  "dependencies": {
+    "@clerk/express": "^1.2.2",
+    "@prisma/client": "^5.20.0",
+    "express": "^4.21.0"
+  }
+}
