@@ -1,5 +1,5 @@
 import { PrismaClient } from "@prisma/client"
-import { ModelRepository } from "./ModelRepository.js"
+import { PrismaRepository } from "./PrismaRepository.js"
 import { prisma } from "../prisma.js"
 
 export interface IEvent { 
@@ -14,8 +14,9 @@ export interface IEvent {
   updatedAt: Date 
 }
 
-export class EventRepository extends ModelRepository<IEvent> {
+export class EventRepository extends PrismaRepository<IEvent> {
   private prisma: PrismaClient = prisma
+  
   protected getModel() {
     return this.prisma.event
   }

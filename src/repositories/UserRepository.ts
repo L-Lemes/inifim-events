@@ -1,5 +1,5 @@
 import { PrismaClient } from "@prisma/client"
-import { ModelRepository } from "./ModelRepository.js"
+import { PrismaRepository } from "./PrismaRepository.js"
 import { prisma } from "../prisma.js"
 
 export interface IUser { 
@@ -11,8 +11,9 @@ export interface IUser {
   updatedAt: Date 
 }
 
-export class UserRepository extends ModelRepository<IUser> {
+export class UserRepository extends PrismaRepository<IUser> {
   private prisma: PrismaClient = prisma
+  
   protected getModel() {
     return this.prisma.user
   }

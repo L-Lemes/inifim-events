@@ -3,7 +3,7 @@ export interface IBaseModel {
   [key: string]: any
 }
 
-interface IRepositoryBase<T extends IBaseModel> {
+interface IBaseRepository<T extends IBaseModel> {
   create(data: Omit<T, 'id' | 'createdAt' | 'updatedAt'>): Promise<T>
   findById(id: string): Promise<T | null>
   findAll(): Promise<T[]>
@@ -11,7 +11,7 @@ interface IRepositoryBase<T extends IBaseModel> {
   delete(id: string): Promise<T>
 }
 
-export abstract class AbstractRepository<T extends IBaseModel> implements IRepositoryBase<T> {
+export abstract class BaseRepository<T extends IBaseModel> implements IBaseRepository<T> {
   abstract create(data: Omit<T, 'id' | 'createdAt' | 'updatedAt'>): Promise<T>
   abstract findById(id: string): Promise<T | null>
   abstract findAll(): Promise<T[]>

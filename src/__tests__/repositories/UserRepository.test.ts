@@ -1,5 +1,5 @@
 import { describe, it, expect, expectTypeOf } from "vitest"
-import { PrismaModelMethods, ModelRepository } from "../../repositories/ModelRepository.js"
+import { PrismaModelMethods, PrismaRepository } from "../../repositories/PrismaRepository.js"
 import { IUser } from "../../repositories/UserRepository.js"
 
 describe("test users repository methods", () => {
@@ -71,7 +71,7 @@ describe("test users repository methods", () => {
 
   const mockPrismaDotUser = new MockPrismaDotUser()
 
-  class MockUserRepository extends ModelRepository<IUser> {
+  class MockUserRepository extends PrismaRepository<IUser> {
     protected getModel() {
       return mockPrismaDotUser
     }

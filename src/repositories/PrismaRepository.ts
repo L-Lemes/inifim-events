@@ -1,6 +1,4 @@
-import { PrismaClient } from '@prisma/client'
-import { AbstractRepository, IBaseModel } from './Repository.js'
-import { prisma } from '../prisma.js';
+import { BaseRepository, IBaseModel } from './Repository.js'
 
 export interface PrismaModelMethods<T extends IBaseModel> {
   create(args: { data: Omit<T, 'id' | 'createdAt' | 'updatedAt'> }): Promise<T>;
@@ -10,8 +8,7 @@ export interface PrismaModelMethods<T extends IBaseModel> {
   delete(args: { where: { id: string } }): Promise<T>;
 }
 
-export abstract class ModelRepository<T extends IBaseModel> extends AbstractRepository<T> {
-  
+export abstract class PrismaRepository<T extends IBaseModel> extends BaseRepository<T> {
   public constructor() {
     super()
   } 
