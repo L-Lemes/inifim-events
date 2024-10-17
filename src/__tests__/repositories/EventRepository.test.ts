@@ -1,6 +1,6 @@
 import { describe, it, expect, expectTypeOf } from "vitest"
-import { PrismaModelMethods, PrismaRepository } from "../../repositories/PrismaRepository.js"
-import { IEvent } from "../../repositories/EventRepository.js"
+import { PrismaModelMethods, PrismaRepository } from "../../repositories/prisma-repository.js"
+import { IEvent } from "../../repositories/event-repository.js"
 
 describe("test events repository methods", () => {
   const eventsData = [
@@ -77,7 +77,7 @@ describe("test events repository methods", () => {
   const mockPrismaEvent = new MockPrismaDotEvent()
 
   class MockEventRepository extends PrismaRepository<IEvent> {
-    protected getModel() {
+    getModel() {
       return mockPrismaEvent
     }
   }

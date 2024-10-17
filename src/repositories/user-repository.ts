@@ -1,5 +1,5 @@
 import { PrismaClient } from "@prisma/client"
-import { PrismaRepository } from "./PrismaRepository.js"
+import { PrismaRepository } from "./prisma-repository.js"
 import { prisma } from "../prisma.js"
 
 export interface IUser { 
@@ -12,9 +12,14 @@ export interface IUser {
 }
 
 export class UserRepository extends PrismaRepository<IUser> {
-  private prisma: PrismaClient = prisma
+  private prisma: PrismaClient
+
+  constructor(prisma: PrismaClient) {
+    super();
+    this.prisma = prisma;
+  }
   
-  protected getModel() {
+  getModel() {
     return this.prisma.user
   }
 }

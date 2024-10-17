@@ -1,4 +1,4 @@
-import { BaseRepository, IBaseModel } from './Repository.js'
+import { BaseRepository, IBaseModel } from './repository.js'
 
 export interface PrismaModelMethods<T extends IBaseModel> {
   create(args: { data: Omit<T, 'id' | 'createdAt' | 'updatedAt'> }): Promise<T>;
@@ -16,19 +16,20 @@ export abstract class PrismaRepository<T extends IBaseModel> extends BaseReposit
   protected abstract getModel(): PrismaModelMethods<T>
 
   async create(data: Omit<T, 'id' | 'createdAt' | 'updatedAt'>): Promise<T> {
-    return this.getModel().create({ data })
+    const newEvent = await this.getModel().create({ data })
+    return newEvent
   }
 
   async findById(id: string): Promise<T | null> {
     return this.getModel().findUnique({ where: { id } })
   }
 
-  async findAll(): Promise<T[]> {
-    return this.getModel().findMany()
+  async findAll(args?: object): Promise<T[] | []> {
+    return await this.getModel().findMany(args)
   }
 
   async update(id: string, data: Partial<Omit<T, 'id'>>): Promise<T> {
-    return this.getModel().update({
+    return await this.getModel().update({
       where: { id },
       data,
     })
