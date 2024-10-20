@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express"
-import { IBaseModel } from "../repositories/repository.js"
+import { IBaseModel } from "../repositories/user-repository.js"
 
 
 interface IBaseController {
@@ -7,5 +7,6 @@ interface IBaseController {
 }
 
 export abstract class BaseController implements IBaseController{
+  
   abstract handle(req: Request, res: Response, next: NextFunction): Promise<void>
 }

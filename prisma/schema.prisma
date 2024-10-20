@@ -14,22 +14,55 @@ datasource db {
 }
 
 model User {
-  id        String   @id @default(uuid())
-  fullName  String
-  email     String
-  password  String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id                  String         @id @default(uuid())
+  name                String
+  email               String
+  password            String
+  createdAt           DateTime       @default(now())
+  updatedAt           DateTime       @updatedAt
+  managedEvents       Event[]        @relation("managedEvents")
+  eventsIWasInvitedTo Event[]
+  configuration       Configuration?
+  location            Location[]
+}
+
+model Configuration {
+  id            String @id @default(uuid())
+  overallVolume Int
+  soundEffects  Int
+  musicVolume   Int
+  language      String
+  textSize      Int
+  userId        String @unique
+  user          User   @relation(fields: [userId], references: [id])
 }
 
 model Event {
   id             String   @id @default(uuid())
   name           String
+  slogan         String
+  description    String
   numberOfGuests Int
-  local          String
-  date           DateTime
+  locationId     String   @unique
+  location       Location @relation(fields: [locationId], references: [id])
+  startDate      DateTime
+  endDate        DateTime
   startTime      DateTime
   endTime        DateTime
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
+  managedById    String
+  managerBy      User     @relation("managedEvents", fields: [managedById], references: [id])
+  guestsId       User[]
+}
+
+model Location {
+  id          String  @id @default(uuid())
+  name        String
+  publicPlace String
+  number      Int
+  cep         Int
+  event       Event[]
+  user        User?   @relation(fields: [userId], references: [id])
+  userId      String?
 }
