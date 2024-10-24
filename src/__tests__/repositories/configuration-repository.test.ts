@@ -78,8 +78,12 @@ describe('test configurations repository instance logic', () => {
   })
 
   it('should be possible updated a configuration', async () => {
-    const configurationFound = await configurationRepository.findById(configurationsData[0].id)
+    const configurationFound = await configurationRepository.update(configurationsData[0].id, {
+      overallVolume: 100,
+      musicVolume: 100
+    })
 
-    expect(configurationFound).toMatchObject(configurationsData[0])
+    expect(configurationFound).toHaveProperty('overallVolume', 100)
+    expect(configurationFound).toHaveProperty('musicVolume', 100)
   })
 })
