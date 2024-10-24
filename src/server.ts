@@ -1,17 +1,20 @@
-import express, {Request, Response} from "express"
-import { CreateEvent } from "./use-cases/event/create-event-use-case.js"
-import { EventController } from "./controllers/create-event-controller.js"
-import { EventRepository } from "./repositories/event-repository.js"
+import express from "express"
+
 import { prisma } from "./prisma.js"
+import { UserRepository } from "./repositories/user-repository.js";
+import { ConfigurationRepository } from "./repositories/configuration-repository.js";
 
 const app = express()
 app.use(express.json())
 
-const eventRepository = new EventRepository(prisma)
-const createEventUseCase = new CreateEvent(eventRepository)
-const eventController = new EventController(createEventUseCase)
+const data = {
+  overallVolume: 100
+};
 
-app.post('/', eventController.handle)
+const id = '90ab1622-010c-49ec-bdf5-c2033939ed2d'
+
+const userRepository = new ConfigurationRepository(prisma)
+const newUser = await userRepository.update(id, data)
 
 app.listen(3333, () => {
   console.log("é o homi n tem jeito")

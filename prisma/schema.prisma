@@ -27,14 +27,16 @@ model User {
 }
 
 model Configuration {
-  id            String @id @default(uuid())
+  id            String   @id @default(uuid())
   overallVolume Int
   soundEffects  Int
   musicVolume   Int
   language      String
   textSize      Int
-  userId        String @unique
-  user          User   @relation(fields: [userId], references: [id])
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  userId        String   @unique
+  user          User     @relation(fields: [userId], references: [id])
 }
 
 model Event {
@@ -57,12 +59,14 @@ model Event {
 }
 
 model Location {
-  id          String  @id @default(uuid())
+  id          String   @id @default(uuid())
   name        String
   publicPlace String
   number      Int
   cep         Int
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
   event       Event[]
-  user        User?   @relation(fields: [userId], references: [id])
   userId      String?
+  user        User?    @relation(fields: [userId], references: [id])
 }

@@ -8,6 +8,8 @@ export interface ILocation {
   publicPlace: string
   number:      number
   cep:         number
+  createdAt?: Date
+  updatedAt?: Date  
   event?:       IEvent[] | null
   user?:        IUser | null
   userId?:      string | null

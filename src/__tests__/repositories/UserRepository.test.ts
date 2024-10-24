@@ -4,7 +4,7 @@ import { UserRepository } from "../../repositories/user-repository.js";
 import { prisma } from "../../prisma.js";
 
 
-describe("test users repository methods", () => {
+describe("test user repository instance logic", () => {
   const usersData = [
     {
       id: 'id-test-1',

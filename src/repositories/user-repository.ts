@@ -19,7 +19,9 @@ export class UserRepository extends BaseUserRepository<IUser> {
   create = async (data: TCreateData<IUser>): Promise<IUser> => {
     const newEvent = await this.prisma.user.create({
       data: {
-        ...data,
+        name: 'fé',        
+        email: 'pqp',      
+        password: 'vsfff', 
         configuration: {
           create: {
             language: 'pt-br',
@@ -30,11 +32,8 @@ export class UserRepository extends BaseUserRepository<IUser> {
           }
         }
       },
-      include: {
-        configuration: true,
-        managedEvents: true,
-        eventsIWasInvitedTo: true,
-        location: true
+      include: { 
+        configuration: true, 
       }
     })
 
