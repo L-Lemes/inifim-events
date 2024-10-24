@@ -12,9 +12,11 @@ export interface IConfiguration {
   userId?: string
   user?: IUser
 }
+type TFindById<T> = (id: string) => Promise<T | null>
+type TUpdate<T> = (id: string, data: Partial<Omit<IConfiguration, 'userId' | 'user'>>) => Promise<T>
 
 export interface IConfigurationRepository<T> {
-  findById: (id: string) => Promise<T | null>
-  update: (id: string, data: Partial<Omit<IConfiguration, 'userId' | 'user'>>) => Promise<T>
+  findById: TFindById<T>
+  update: TUpdate<T>
 }
 
