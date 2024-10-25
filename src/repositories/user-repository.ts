@@ -19,9 +19,9 @@ export class UserRepository extends BaseUserRepository<IUser> {
   create = async (data: TCreateData<IUser>): Promise<IUser> => {
     const newEvent = await this.prisma.user.create({
       data: {
-        name: 'fé',        
-        email: 'pqp',      
-        password: 'vsfff', 
+        name: data.name,        
+        email: data.email,      
+        password: data.password, 
         configuration: {
           create: {
             language: 'pt-br',
@@ -46,10 +46,20 @@ export class UserRepository extends BaseUserRepository<IUser> {
         id 
       },
       include: {
-        eventsIWasInvitedTo: true,
+        configuration: true,
         location: true,
-        managedEvents: true,
-        configuration: true
+        eventsIWasInvitedTo: {
+          include: {
+            managedBy: true,
+            location: true
+          }
+        },
+        managedEvents: {
+          include: {
+            managedBy: true,
+            location: true
+          }
+        },
       }
     })
     return eventFound
@@ -62,11 +72,21 @@ export class UserRepository extends BaseUserRepository<IUser> {
       }, 
       data,
       include: {
-        eventsIWasInvitedTo: true,
+        configuration: true,
         location: true,
-        managedEvents: true,
-        configuration: true
-      } 
+        eventsIWasInvitedTo: {
+          include: {
+            managedBy: true,
+            location: true
+          }
+        },
+        managedEvents: {
+          include: {
+            managedBy: true,
+            location: true
+          }
+        },
+      }
     })
 
     return eventUpdated
@@ -78,10 +98,20 @@ export class UserRepository extends BaseUserRepository<IUser> {
         id 
       },
       include: {
-        eventsIWasInvitedTo: true,
+        configuration: true,
         location: true,
-        managedEvents: true,
-        configuration: true
+        eventsIWasInvitedTo: {
+          include: {
+            managedBy: true,
+            location: true
+          }
+        },
+        managedEvents: {
+          include: {
+            managedBy: true,
+            location: true
+          }
+        },
       }
     })
     return userDelete    
