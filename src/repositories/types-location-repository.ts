@@ -14,3 +14,5 @@ export interface ILocation {
   user?:        IUser | null
   userId?:      string | null
 }
+
+export type TCreateDataLoc<T> = Omit<T, 'id' | 'createdAt' | 'updatedAt'>
