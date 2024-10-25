@@ -13,7 +13,7 @@ export interface IEvent {
   endTime: Date
   createdAt: Date 
   updatedAt: Date 
-  managedById: string
+  managerId: string
   managedBy: IUser     
   locationId: string
   location: ILocation
@@ -22,18 +22,18 @@ export interface IEvent {
 
 export type TCreateData<T> = Omit<T, 'id' | 'createdAt' | 'updatedAt' | 'guests'>
 
-export type TUpdateData<T> = Partial<Omit<T, 'id' | 'createdAt' | 'updatedAt' | 'managedById' | 'managedBy' | 'location'>>
+export type TUpdateData<T> = Partial<Omit<T, 'id' | 'createdAt' | 'updatedAt' | 'managerId' | 'managedBy' | 'location'>>
 
 export type TCreate<T> = (data: TCreateData<T>) => Promise<T>
 export type TFindById<T> = (id: string) => Promise<T | null>
-export type TFindByAuthor<T> = (authorId: string) => Promise<T | null>
+export type TFindByManager<T> = (managerId: string) => Promise<T | null>
 export type TUpdate<T> = (id: string, data: TUpdateData<T>) => Promise<T>
 export type TDelete<T> = (id: string) => Promise<T>
 
 export interface IEventRepository<T> {
   create: TCreate<T> 
   findById: TFindById<T>
-  findByAuthor: TFindByAuthor<T>
+  findByManager: TFindByManager<T>
   update: TUpdate<T>
   delete: TDelete<T>
 }
