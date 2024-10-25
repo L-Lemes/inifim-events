@@ -36,7 +36,7 @@ export class EventRepository extends BaseEventRepository<IEvent> {
         },
         managedBy: {
           connect: {
-            id: data.managedById
+            id: data.managerId
           }
         }
       },
@@ -64,7 +64,7 @@ export class EventRepository extends BaseEventRepository<IEvent> {
   
   findByManager = async(managerId: string): Promise<IEvent | null> => {
     const eventFound = await this.prisma.event.findUnique({where: 
-      { managedById: managerId },
+      { managerId },
       include: {
         managedBy: true,
         location: true,
