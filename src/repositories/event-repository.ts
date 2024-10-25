@@ -1,10 +1,11 @@
 import { PrismaClient } from "@prisma/client"
-import { IUser, IUserRepository, TCreate, TCreateData, TFindById, TUpdate, TUpdateData, TDelete } from "./types-user-reposiotry.js"
-import { IEvent } from "./types-event-repository.js"
+import { IEvent, IEventRepository, TCreate, TCreateData, TDelete, TFindByAuthor, TFindById, TUpdate, TUpdateData } from "./types-event-repository.js"
+import { IUser } from "./types-user-reposiotry.js"
 
 export abstract class BaseEventRepository<T> implements IEventRepository<T> {
  abstract create: TCreate<T>
  abstract findById: TFindById<T>
+ abstract findByAuthor: TFindByAuthor<T>
  abstract update: TUpdate<T>
  abstract delete: TDelete<T>
 } 
@@ -20,54 +21,81 @@ export class EventRepository extends BaseEventRepository<IEvent> {
   create = async (data: TCreateData<IEvent>): Promise<IEvent> => {
     const newEvent = await this.prisma.event.create({
       data: {
-        name: 'fé',        
-        email: 'pqp',      
-        password: 'vsfff', 
-        configuration: {
-          create: {
-            language: 'pt-br',
-            overallVolume: 80,
-            musicVolume: 80,
-            soundEffects: 80,
-            textSize: 100,
+        name: data.name,
+        slogan: data.slogan,
+        description: data.description,
+        numberOfGuests: data.numberOfGuests,
+        startDate: data.startDate,
+        endDate: data.endDate,
+        startTime: data.startTime,
+        endTime: data.endTime,
+        location: {
+          connect: {
+            id: data.locationId
+          }
+        },
+        managedBy: {
+          connect: {
+            id: data.managedById
           }
         }
       },
-      include: { 
-        configuration: true, 
+      include: {
+        location: true,
+        managedBy: true,
+        guests: true
       }
-    })
-
-    return  newEvent
-  }
+    });
+  
+    return newEvent;
+  };
 
   findById = async(id: string): Promise<IEvent | null> => {
     const eventFound = await this.prisma.event.findUnique({where: 
-      { 
-        id 
-      },
+      { id }, 
       include: {
-        eventsIWasInvitedTo: true,
+        managedBy: true,
         location: true,
-        managedEvents: true,
-        configuration: true
+        guests: true
+      }
+    })
+    return eventFound
+  }
+  
+  findByAuthor = async(authorId: string): Promise<IEvent | null> => {
+    const eventFound = await this.prisma.event.findUnique({where: 
+      { managedById: authorId },
+      include: {
+        managedBy: true,
+        location: true,
+        guests: true
       }
     })
     return eventFound
   }
 
   update = async (id: string, data: TUpdateData<IEvent>): Promise<IEvent> => {
-    const eventUpdated = await this.prisma.event.update({
-      where: { 
-        id 
+
+    const { locationId, guests, ...updateData } = data;
+
+    const eventUpdated = await this.prisma.event.update({where: 
+      { id },
+      data: {
+        ...updateData,
+        location: locationId ? {
+          connect: {
+            id: locationId
+          }
+        } : undefined ,
+        guests: guests ? {
+          set: guests.map((guest: IUser) => ({ id: guest.id })) 
+        } : undefined,
       }, 
-      data,
       include: {
-        eventsIWasInvitedTo: true,
+        managedBy: true,
         location: true,
-        managedEvents: true,
-        configuration: true
-      } 
+        guests: true
+      }
     })
 
     return eventUpdated
@@ -75,14 +103,11 @@ export class EventRepository extends BaseEventRepository<IEvent> {
 
   delete = async (id: string): Promise<IEvent> => {
     const EventDelete =  await this.prisma.event.delete({where: 
-      { 
-        id 
-      },
+      { id },
       include: {
-        eventsIWasInvitedTo: true,
         location: true,
-        managedEvents: true,
-        configuration: true
+        managedBy: true,
+        guests: true
       }
     })
     return EventDelete    
