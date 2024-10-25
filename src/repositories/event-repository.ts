@@ -1,11 +1,11 @@
 import { PrismaClient } from "@prisma/client"
-import { IEvent, IEventRepository, TCreate, TCreateData, TDelete, TFindByAuthor, TFindById, TUpdate, TUpdateData } from "./types-event-repository.js"
+import { IEvent, IEventRepository, TCreate, TCreateData, TDelete, TFindByManager, TFindById, TUpdate, TUpdateData } from "./types-event-repository.js"
 import { IUser } from "./types-user-reposiotry.js"
 
 export abstract class BaseEventRepository<T> implements IEventRepository<T> {
  abstract create: TCreate<T>
  abstract findById: TFindById<T>
- abstract findByAuthor: TFindByAuthor<T>
+ abstract findByManager: TFindByManager<T>
  abstract update: TUpdate<T>
  abstract delete: TDelete<T>
 } 
@@ -62,9 +62,9 @@ export class EventRepository extends BaseEventRepository<IEvent> {
     return eventFound
   }
   
-  findByAuthor = async(authorId: string): Promise<IEvent | null> => {
+  findByManager = async(managerId: string): Promise<IEvent | null> => {
     const eventFound = await this.prisma.event.findUnique({where: 
-      { managedById: authorId },
+      { managedById: managerId },
       include: {
         managedBy: true,
         location: true,
