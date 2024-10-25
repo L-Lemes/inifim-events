@@ -50,14 +50,16 @@ export class UserRepository extends BaseUserRepository<IUser> {
         location: true,
         eventsIWasInvitedTo: {
           include: {
+            location: true,
             managedBy: true,
-            location: true
+            guests: true
           }
         },
         managedEvents: {
           include: {
+            location: true,
             managedBy: true,
-            location: true
+            guests: true
           }
         },
       }
@@ -77,13 +79,15 @@ export class UserRepository extends BaseUserRepository<IUser> {
         eventsIWasInvitedTo: {
           include: {
             managedBy: true,
-            location: true
+            location: true,
+            guests: true
           }
         },
         managedEvents: {
           include: {
             managedBy: true,
-            location: true
+            location: true,
+            guests: true
           }
         },
       }
@@ -102,14 +106,16 @@ export class UserRepository extends BaseUserRepository<IUser> {
         location: true,
         eventsIWasInvitedTo: {
           include: {
+            location: true,
             managedBy: true,
-            location: true
+            guests: true
           }
         },
         managedEvents: {
           include: {
+            location: true,
             managedBy: true,
-            location: true
+            guests: true
           }
         },
       }
