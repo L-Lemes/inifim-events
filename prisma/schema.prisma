@@ -45,17 +45,17 @@ model Event {
   slogan         String
   description    String
   numberOfGuests Int
-  locationId     String   @unique
-  location       Location @relation(fields: [locationId], references: [id])
   startDate      DateTime
   endDate        DateTime
   startTime      DateTime
   endTime        DateTime
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
-  managedById    String
-  managerBy      User     @relation("managedEvents", fields: [managedById], references: [id])
-  guestsId       User[]
+  locationId     String
+  location       Location @relation(fields: [locationId], references: [id])
+  managerId      String   @unique
+  managedBy      User     @relation("managedEvents", fields: [managerId], references: [id])
+  guests         User[]
 }
 
 model Location {
@@ -66,6 +66,7 @@ model Location {
   cep         Int
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+  eventId     String   @unique
   event       Event[]
   userId      String?
   user        User?    @relation(fields: [userId], references: [id])
