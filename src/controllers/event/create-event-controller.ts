@@ -1,7 +1,9 @@
 import { Request, Response, NextFunction } from "express"
-import { IEvent, TCreate, TCreateData } from "../repositories/types-event-repository.js"
+import { IEvent } from "../../repositories/event/types-event-repository.js"
+import { TDataToBeCreated } from "../../repositories/types-base.js"
+
 interface TCreateEventUseCase {
-  execute: (eventData: TCreateData<IEvent>) => Promise<IEvent>
+  execute: (eventData: TDataToBeCreated<IEvent>) => Promise<IEvent>
 }
 
 export class CreateEventController {
@@ -16,7 +18,7 @@ export class CreateEventController {
       const newEvent = await this.createEventUseCase.execute(data)
       res.status(201).json(newEvent);
     } catch(err) {
-      if(err instanceof Error) res.status(400).send(err.message);
+      if(err instanceof Error) res.status(400).json(err.message);
     }
   }
 
