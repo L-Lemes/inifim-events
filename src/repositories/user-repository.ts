@@ -33,7 +33,7 @@ export class UserRepository extends BaseUserRepository<IUser> {
         }
       },
       include: { 
-        configuration: true, 
+        configuration: true,
       }
     })
 
@@ -47,21 +47,6 @@ export class UserRepository extends BaseUserRepository<IUser> {
       },
       include: {
         configuration: true,
-        location: true,
-        eventsIWasInvitedTo: {
-          include: {
-            location: true,
-            managedBy: true,
-            guests: true
-          }
-        },
-        managedEvents: {
-          include: {
-            location: true,
-            managedBy: true,
-            guests: true
-          }
-        },
       }
     })
     return eventFound
@@ -75,21 +60,6 @@ export class UserRepository extends BaseUserRepository<IUser> {
       data,
       include: {
         configuration: true,
-        location: true,
-        eventsIWasInvitedTo: {
-          include: {
-            managedBy: true,
-            location: true,
-            guests: true
-          }
-        },
-        managedEvents: {
-          include: {
-            managedBy: true,
-            location: true,
-            guests: true
-          }
-        },
       }
     })
 
@@ -103,21 +73,6 @@ export class UserRepository extends BaseUserRepository<IUser> {
       },
       include: {
         configuration: true,
-        location: true,
-        eventsIWasInvitedTo: {
-          include: {
-            location: true,
-            managedBy: true,
-            guests: true
-          }
-        },
-        managedEvents: {
-          include: {
-            location: true,
-            managedBy: true,
-            guests: true
-          }
-        },
       }
     })
     return userDelete    
