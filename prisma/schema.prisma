@@ -14,17 +14,17 @@ datasource db {
 }
 
 model User {
-  id                  String        @id @default(uuid())
-  name                String
-  email               String
-  password            String
-  createdAt           DateTime      @default(now())
-  updatedAt           DateTime      @updatedAt
-  configurationId     String        @unique
-  configuration       Configuration @relation("configurations", fields: [configurationId], references: [id])
-  managedEvents       Event[]       @relation("managedEvents")
-  eventsIWasInvitedTo Event[]
-  location            Location[]
+  id              String        @id @default(uuid())
+  name            String
+  email           String
+  password        String
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+  configurationId String        @unique
+  configuration   Configuration @relation("configurations", fields: [configurationId], references: [id])
+
+  EventUserRole EventUserRole[]
+  landlord      landlord[]
 }
 
 model Configuration {
@@ -36,7 +36,8 @@ model Configuration {
   textSize      Int
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
-  user          User?    @relation("configurations")
+
+  user User? @relation("configurations")
 }
 
 model Event {
@@ -51,11 +52,34 @@ model Event {
   endTime        DateTime
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
-  locationId     String
-  location       Location @relation(fields: [locationId], references: [id])
-  managerId      String   @unique
-  managedBy      User     @relation("managedEvents", fields: [managerId], references: [id])
-  guests         User[]
+
+  locationId String
+  location   Location @relation(fields: [locationId], references: [id])
+
+  EventUserRole EventUserRole[]
+}
+
+model EventUserRole {
+  id      String   @default(uuid())
+  userId  String
+  eventId String
+  role    RoleType
+
+  user  User  @relation(fields: [userId], references: [id])
+  event Event @relation(fields: [eventId], references: [id])
+
+  @@id([userId, eventId, role])
+}
+
+model landlord {
+  id         String @default(uuid())
+  userId     String
+  locationId String
+
+  user     User     @relation(fields: [userId], references: [id])
+  location Location @relation(fields: [locationId], references: [id])
+
+  @@id([userId, locationId])
 }
 
 model Location {
@@ -64,10 +88,15 @@ model Location {
   publicPlace String
   number      Int
   cep         Int
+  isPublic    Boolean
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
-  eventId     String   @unique
-  event       Event[]
-  userId      String?
-  user        User?    @relation(fields: [userId], references: [id])
+
+  Event    Event[]
+  landlord landlord[]
+}
+
+enum RoleType {
+  MANAGER
+  GUEST
 }
