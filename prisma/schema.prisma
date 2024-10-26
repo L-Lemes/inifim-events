@@ -54,7 +54,7 @@ model Event {
   updatedAt      DateTime @updatedAt
 
   locationId String
-  location   Location @relation(fields: [locationId], references: [id])
+  location   Location? @relation(fields: [locationId], references: [id])
 
   EventUserRole EventUserRole[]
 }
@@ -94,6 +94,8 @@ model Location {
 
   Event    Event[]
   landlord landlord[]
+
+  @@unique([publicPlace, number, cep, isPublic])
 }
 
 enum RoleType {
