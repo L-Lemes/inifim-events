@@ -1,3 +1,5 @@
+import { TDataToBeUpdated } from "../types-base.js";
+
 export interface IConfiguration {
   id: string;
   language: string;
@@ -10,7 +12,7 @@ export interface IConfiguration {
 }
 
 type TFindById<T> = (id: string) => Promise<T | null>
-type TUpdate<T> = (id: string, data: Partial<T>) => Promise<T>
+type TUpdate<T> = (id: string, data: TDataToBeUpdated<T>) => Promise<T>
 
 export interface IConfigurationRepository<T> {
   findById: TFindById<T>
