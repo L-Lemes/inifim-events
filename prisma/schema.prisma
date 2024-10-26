@@ -14,15 +14,16 @@ datasource db {
 }
 
 model User {
-  id                  String         @id @default(uuid())
+  id                  String        @id @default(uuid())
   name                String
   email               String
   password            String
-  createdAt           DateTime       @default(now())
-  updatedAt           DateTime       @updatedAt
-  managedEvents       Event[]        @relation("managedEvents")
+  createdAt           DateTime      @default(now())
+  updatedAt           DateTime      @updatedAt
+  configurationId     String        @unique
+  configuration       Configuration @relation("configurations", fields: [configurationId], references: [id])
+  managedEvents       Event[]       @relation("managedEvents")
   eventsIWasInvitedTo Event[]
-  configuration       Configuration?
   location            Location[]
 }
 
@@ -35,8 +36,7 @@ model Configuration {
   textSize      Int
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
-  userId        String   @unique
-  user          User     @relation(fields: [userId], references: [id])
+  user          User?    @relation("configurations")
 }
 
 model Event {
