@@ -1,4 +1,4 @@
-import { EventDataValidator } from "../../helpers/event-data-validator.js";
+import { prisma } from "../../prisma.js";
 import { EventRepository } from "../../repositories/event/event-repository.js";
 import { IEvent } from "../../repositories/event/types-event-repository.js";
 import { TDataToBeCreated } from "../../repositories/types-base.js";
@@ -6,13 +6,22 @@ import { TDataToBeCreated } from "../../repositories/types-base.js";
 
 export class CreateEventUseCase {
   constructor(private repository: EventRepository) {}
-  
-  private validate(eventData: TDataToBeCreated<IEvent>): void {
-    EventDataValidator(eventData); 
-  }
 
   async execute(eventData: TDataToBeCreated<IEvent>): Promise<IEvent> {
-    this.validate(eventData);
+
+    const existsEvent = await prisma.event.findMany({where: {
+      location: eventData.location,
+    }})
+
+    const eventAtTheSameTime = existsEvent.filter(e => 
+      eventData.startDate <= e.endDate &&
+      eventData.endDate >= e.startDate &&
+      eventData.startTime <= e.endTime &&
+      eventData.endTime >= e.startTime
+    );
+
+    if (eventAtTheSameTime.length) throw new Error('ja tem evento nesse horario fdp')
+
     const newEvent = this.repository.create(eventData);
     return newEvent
   }
