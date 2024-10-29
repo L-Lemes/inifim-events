@@ -7,18 +7,26 @@ export abstract class BaseUserRepository<T> implements IUserRepository<T> {
  abstract findById: (id: string) => Promise<T | null>
  abstract update: (id: string, data: TDataToBeUpdated<T>) => Promise<T>
  abstract delete: (id: string) => Promise<T>
+ abstract findByEmail: (email: string) => Promise<T | null>
 } 
 
 export class UserRepository extends BaseUserRepository<IUser> {
-  private prisma: PrismaClient
+  static prisma: PrismaClient
 
-  constructor(prisma: PrismaClient) {
+  constructor() {
     super()
-    this.prisma = prisma
+  }
+
+  setPrismaInstance(prisma: PrismaClient) {
+    UserRepository.prisma = prisma;
+  }
+
+  getPrismaInstance() {
+    return UserRepository.prisma;
   }
 
   create = async (data: TDataToBeCreated<IUser>): Promise<IUser> => {
-    const newEvent = await this.prisma.user.create({
+    const newEvent = await UserRepository.prisma.user.create({
       data: {
         name: data.name,        
         email: data.email,      
@@ -42,7 +50,7 @@ export class UserRepository extends BaseUserRepository<IUser> {
   }
 
   findById = async(id: string): Promise<IUser | null> => {
-    const eventFound = await this.prisma.user.findUnique({where: 
+    const eventFound = await UserRepository.prisma.user.findUnique({where: 
       { 
         id 
       },
@@ -53,8 +61,20 @@ export class UserRepository extends BaseUserRepository<IUser> {
     return eventFound
   }
 
+  findByEmail = async(email: string): Promise<IUser | null> => {
+    const eventFound = await UserRepository.prisma.user.findUnique({where: 
+      { 
+        email 
+      },
+      include: {
+        configuration: true,
+      }
+    })
+    return eventFound
+  }
+
   update = async (id: string, data: TDataToBeUpdated<IUser>): Promise<IUser> => {
-    const eventUpdated = await this.prisma.user.update({
+    const eventUpdated = await UserRepository.prisma.user.update({
       where: { 
         id 
       }, 
@@ -68,7 +88,7 @@ export class UserRepository extends BaseUserRepository<IUser> {
   }
 
   delete = async (id: string): Promise<IUser> => {
-    const userDelete =  await this.prisma.user.delete({where: 
+    const userDelete =  await UserRepository.prisma.user.delete({where: 
       { 
         id 
       },
