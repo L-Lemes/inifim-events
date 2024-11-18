@@ -6,9 +6,11 @@ import { UserRepository } from "./repositories/user/user-repository.js";
 import { LoginUserUseCase } from "./use-cases/user/login-user-use-case.js";
 import { LoginUserControler } from "./controllers/user/login-user-controller.js";
 import { TokenRenewalMiddleware } from "./middlewares/token-renewal-middleware.js";
+import cookieParser from "cookie-parser";
 
 const app = express()
 
+app.use(cookieParser());
 app.use(express.json())
 
 const userRepository_2 = new UserRepository()
@@ -19,8 +21,8 @@ const loginUserControler = new LoginUserControler(loginUserUseCase)
 const tokenRenewalMiddleware = new TokenRenewalMiddleware()
 
 
-app.use('/user', userRoutes) 
-app.use('/event', tokenRenewalMiddleware.handle, eventRoutes)
+app.use('/auth', userRoutes) 
+app.use('/events', tokenRenewalMiddleware.handle, eventRoutes)
 app.post('/login', loginUserControler.handle)
 
 
