@@ -13,6 +13,7 @@
   "license": "ISC",
   "devDependencies": {
     "@types/bcrypt": "^5.0.2",
+    "@types/cookie-parser": "^1.4.7",
     "@types/express": "^5.0.0",
     "@types/node": "^22.7.4",
     "prisma": "^5.20.0",
@@ -25,6 +26,7 @@
     "@clerk/express": "^1.2.2",
     "@prisma/client": "^5.20.0",
     "bcrypt": "^5.1.1",
+    "cookie-parser": "^1.4.7",
     "express": "^4.21.0",
     "jose": "^5.9.6",
     "uuid": "^11.0.2"
