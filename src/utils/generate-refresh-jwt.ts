@@ -4,9 +4,9 @@ export const REFRESH_SECRET_KEY = new TextEncoder().encode(process.env.REFRESH_A
 
 export const generateRefreshToken = async (userId: string) => {
   return new SignJWT({ id: userId })
-      .setProtectedHeader({ alg: 'HS256' })
-      .setExpirationTime('7d')
-      .sign(REFRESH_SECRET_KEY);
+    .setProtectedHeader({ alg: 'HS256' })
+    .setExpirationTime('5m')
+    .sign(REFRESH_SECRET_KEY);
 };
 
 export const verifyRefreshToken = async (token: string) => {
